@@ -1,0 +1,77 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "홍",
+      "lastName": "길동",
+      "email": "hong.gildong@example.com",
+      "age": 28
+    },
+    {
+      "id": 2,
+      "firstName": "김",
+      "lastName": "철수",
+      "email": "kim.chulsoo@example.com",
+      "age": 25
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "JSON 소개",
+      "content": "이 글은 JSON에 대해 간단히 설명하는 글입니다.",
+      "published": true
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "title": "자바스크립트 배우기",
+      "content": "자바스크립트는 정말 멋집니다!",
+      "published": false
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "postId": 1,
+      "author": "홍길동",
+      "comment": "좋은 글이에요, 정말 유익했어요!"
+    },
+    {
+      "id": 2,
+      "postId": 1,
+      "author": "김철수",
+      "comment": "이 글 덕분에 많은 걸 배웠어요!"
+    },
+    {
+      "id": 3,
+      "postId": 2,
+      "author": "홍길동",
+      "comment": "동의해요, 자바스크립트는 진짜 멋져요!"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "노트북",
+      "category": "전자제품",
+      "price": 1200,
+      "stock": 25
+    },
+    {
+      "id": 2,
+      "name": "스마트폰",
+      "category": "전자제품",
+      "price": 800,
+      "stock": 50
+    },
+    {
+      "id": 3,
+      "name": "커피 머그컵",
+      "category": "홈용품",
+      "price": 15,
+      "stock": 200
+    }
+  ]
+}
