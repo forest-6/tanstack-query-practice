@@ -2,41 +2,46 @@
   <main>
     <div>
       <h1>사용자 목록</h1>
-      <table border="1" cellpadding="10">
-        <thead>
-          <tr>
-            <th>이름</th>
-            <th>이메일</th>
-            <th>나이</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in users" :key="user.id">
-            <td>{{ user.firstName }} {{ user.lastName }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.age }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <p v-if="isLoading">Loading...</p>
+      <p v-else-if="error">Error: {{ error.message }}</p>
+      <div v-else>
+        <table border="1" cellpadding="10">
+          <thead>
+            <tr>
+              <th>이름</th>
+              <th>이메일</th>
+              <th>나이</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="user in users" :key="user.id">
+              <td>{{ user.firstName }} {{ user.lastName }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.age }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p v-if="isFetching">⏳ 데이터 새로 불러오는 중...</p>
+      </div>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
-import type { User } from '@/types/user'
-
 import { getUsersApi } from '@/apis/users'
+import { useQuery } from '@tanstack/vue-query'
 
-const users = ref<User[] | null>(null)
-
-const getUsers = async () => {
-  users.value = await getUsersApi()
-}
-
-onMounted(async () => {
-  await getUsers()
+const {
+  data: users,
+  isLoading,
+  isFetching,
+  error,
+} = useQuery({
+  queryKey: ['users'],
+  queryFn: getUsersApi,
+  staleTime: 5000, // 5초 동안 캐시된 데이터 사용
+  gcTime: 10000, // 10초 후 캐시 삭제
+  // refetchInterval: 8000, // 8초 후 자동 새로고침
 })
 </script>
 
