@@ -99,7 +99,6 @@ const pwValid = () => {
     pwValidMessage.value = ''
   } catch (e) {
     if (e instanceof z.ZodError) {
-      console.log(e.errors)
       pwValidMessage.value = e.errors[e.errors.length - 1].message
     }
   }
