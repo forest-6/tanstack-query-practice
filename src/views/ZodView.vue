@@ -97,8 +97,19 @@ const rePwValid = () => {
   }
 }
 
-watch([idInput], () => idValid())
-watch([pwInput], () => pwValid())
+const removeSpace = (str: string) => str.replace(/\s/g, '')
+
+watch([idInput], () => {
+  idInput.value = removeSpace(idInput.value)
+  idValid()
+})
+watch([pwInput], () => {
+  pwInput.value = removeSpace(pwInput.value)
+  pwValid()
+})
+watch([rePwInput], () => {
+  rePwInput.value = removeSpace(rePwInput.value)
+})
 watch([idInput, pwInput], () => pwValid())
 watch([pwInput, rePwInput], () => rePwValid())
 
