@@ -61,9 +61,10 @@ const JoinId = z.string().min(1, '글자를 입력해주세요.')
 const JoinPw = z
   .string()
   .min(9, '9글자 이상이어야 합니다.')
-  .refine((value) => /[a-zA-Z]/.test(value), '영문자가 포함되어야 합니다.')
-  .refine((value) => /\d/.test(value), '숫자가 포함되어야 합니다.')
-  .refine((value) => /[^\w\s]/.test(value), '특수 문자가 포함되어야 합니다.')
+  .refine(
+    (value) => /[a-zA-Z]/.test(value) && /\d/.test(value) && /[^\w\s]/.test(value),
+    '영문자, 숫자, 특수 문자가 모두 포함되어야 합니다.',
+  )
   .refine((value) => !/(.)\1{2,}/.test(value), '문자나 숫자가 3회 이상 반복될 수 없습니다.')
   .refine((value) => {
     const minLength = 3
@@ -87,7 +88,7 @@ const idValid = () => {
     idValidMessage.value = ''
   } catch (e) {
     if (e instanceof z.ZodError) {
-      idValidMessage.value = e.errors[0].message
+      idValidMessage.value = e.errors[e.errors.length - 1].message
     }
   }
 }
@@ -98,7 +99,8 @@ const pwValid = () => {
     pwValidMessage.value = ''
   } catch (e) {
     if (e instanceof z.ZodError) {
-      pwValidMessage.value = e.errors[0].message
+      console.log(e.errors)
+      pwValidMessage.value = e.errors[e.errors.length - 1].message
     }
   }
 }
@@ -113,15 +115,15 @@ const rePwValid = () => {
 
 const removeSpace = (str: string) => str.replace(/\s/g, '')
 
-watch([idInput], () => {
+watch(idInput, () => {
   idInput.value = removeSpace(idInput.value)
   idValid()
 })
-watch([pwInput], () => {
+watch(pwInput, () => {
   pwInput.value = removeSpace(pwInput.value)
   pwValid()
 })
-watch([rePwInput], () => {
+watch(rePwInput, () => {
   rePwInput.value = removeSpace(rePwInput.value)
 })
 watch([idInput, pwInput], () => pwValid())
