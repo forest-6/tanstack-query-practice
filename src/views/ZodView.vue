@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>사용자 추가</h2>
+    <h2>회원 가입</h2>
     <div class="user-add-form">
       <span>
         <label for="id">아이디</label>
@@ -23,13 +23,16 @@
           <span class="input-valid-message">{{ rePwValidMessage }}</span>
         </div>
       </span>
-      <button @click="createUser">사용자 추가</button>
+      <span class="button-wrapper">
+        <button class="cancel" @click="$router.back()">취소</button>
+        <button class="join" :disabled="!joinInputValid" @click="createUser">회원가입</button>
+      </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { z } from 'zod'
 
 import { createUserApi } from '@/apis/users'
@@ -41,6 +44,17 @@ const rePwInput = ref('')
 const idValidMessage = ref('')
 const pwValidMessage = ref('')
 const rePwValidMessage = ref('')
+
+const joinInputValid = computed(() => {
+  return (
+    idInput.value &&
+    pwInput.value &&
+    rePwInput.value &&
+    !idValidMessage.value &&
+    !pwValidMessage.value &&
+    !rePwValidMessage.value
+  )
+})
 
 const JoinId = z.string().min(1, '글자를 입력해주세요.')
 
@@ -159,15 +173,10 @@ const isSequential = (str: string) => {
 .user-add-form {
   border: 1px solid black;
   border-radius: 10px;
-  padding: 10px;
-  width: 350px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  input {
-    height: 30px;
-    min-width: 200px;
-  }
 }
 
 .input-valid-message {
@@ -176,16 +185,38 @@ const isSequential = (str: string) => {
 }
 
 .input-wrapper {
+  width: 250px;
   display: flex;
   flex-direction: column;
+  input {
+    height: 30px;
+    margin-bottom: 5px;
+  }
 }
 
-button {
-  height: 30px;
-  margin-top: 10px;
-  background-color: gainsboro;
-  border: 1px solid gainsboro;
-  border-radius: 10px;
-  font-weight: bold;
+.button-wrapper {
+  display: flex;
+  gap: 10px;
+  button {
+    height: 30px;
+    margin-top: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .cancel {
+    background-color: lightgray;
+    border: 1px solid lightgray;
+  }
+  .join {
+    background: #2ca02c;
+    border: 1px solid #2ca02c;
+    color: #fff;
+    &:disabled {
+      background: lightgray;
+      border: 1px solid lightgray;
+      cursor: not-allowed;
+    }
+  }
 }
 </style>
