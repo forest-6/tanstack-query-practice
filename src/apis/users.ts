@@ -1,4 +1,4 @@
-import type { User } from '@/types/user'
+import type { User, AddUser } from '@/types/user'
 
 const url = import.meta.env.API_BASE_URL
 
@@ -12,7 +12,7 @@ export const getUserByIdApi = async (id: number) => {
   return await response.json()
 }
 
-export const createUserApi = async (userData: User) => {
+export const createUserApi = async (userData: AddUser) => {
   const response = await fetch(`${url}/users`, {
     method: 'POST',
     headers: {

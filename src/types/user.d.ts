@@ -1,8 +1,14 @@
 interface User {
-  id?: number
+  id: number
   name: string
   email: string
   age: number
 }
 
-export { User }
+interface AddUser {
+  name?: string
+  email?: string
+  age?: number
+}
+
+export { User, AddUser }
