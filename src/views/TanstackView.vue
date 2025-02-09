@@ -23,7 +23,10 @@
       <button class="user-add-btn" :disabled="!userInputValid" @click="createUser">추가</button>
     </div>
     <div>
-      <h1>사용자 목록</h1>
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <h1>사용자 목록</h1>
+        <button @click="handleRefresh">새로고침</button>
+      </div>
       <p v-if="isLoading">Loading...</p>
       <p v-else-if="error">Error: {{ error.message }}</p>
       <div v-else>
@@ -69,13 +72,19 @@ const {
   isLoading,
   isFetching,
   error,
+  refetch,
 } = useQuery({
   queryKey: ['users'],
   queryFn: getUsersApi,
   staleTime: 5000, // 5초 동안 캐시된 데이터 사용
   gcTime: 10000, // 10초 후 캐시 삭제
+  refetchOnWindowFocus: false, // 창이 다시 활성화될 때 새로고침 안함
   // refetchInterval: 8000, // 8초 후 자동 새로고침
 })
+
+const handleRefresh = () => {
+  refetch()
+}
 
 const createUserMutation = useMutation({
   mutationFn: createUserApi,
