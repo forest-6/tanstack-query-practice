@@ -25,7 +25,7 @@
       </span>
       <span class="button-wrapper">
         <button class="cancel" @click="$router.back()">취소</button>
-        <button class="join" :disabled="!joinInputValid" @click="createUser">회원가입</button>
+        <button class="join" :disabled="!joinInputValid">회원가입</button>
       </span>
     </div>
   </div>
@@ -34,8 +34,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { z } from 'zod'
-
-import { createUserApi } from '@/apis/users'
 
 const idInput = ref('')
 const pwInput = ref('')
@@ -127,16 +125,6 @@ watch(rePwInput, () => {
 })
 watch([idInput, pwInput], () => pwValid())
 watch([pwInput, rePwInput], () => rePwValid())
-
-//TODO: 사용자 추가 form 추가
-const createUser = async () => {
-  await createUserApi({
-    firstName: '짱구',
-    lastName: '신',
-    email: 'aaaaa',
-    age: 5,
-  })
-}
 
 const isSequential = (str: string) => {
   let increasing = false
