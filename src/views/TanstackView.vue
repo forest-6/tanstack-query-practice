@@ -55,7 +55,7 @@
 import { computed, ref } from 'vue'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { getUsersApi, createUserApi, deleteUserApi } from '@/apis/users'
-import type { AddUser } from '@/types/user'
+import type { User, AddUser } from '@/types/user'
 
 const queryClient = useQueryClient()
 const newUser = ref({} as AddUser)
@@ -91,12 +91,23 @@ const createUserMutation = useMutation({
 
 const deleteUserMutation = useMutation({
   mutationFn: deleteUserApi,
-  onSuccess: (data) => {
-    console.log('✅ 사용자 삭제 성공:', data)
-    queryClient.invalidateQueries({ queryKey: ['users'] })
+  onMutate: (id: number) => {
+    // 현재 사용자 목록 백업
+    const prevUsers = queryClient.getQueryData(['users'])
+    // UI에서만 사용자 삭제
+    queryClient.setQueryData(['users'], (oldUsers: User[]) =>
+      oldUsers.filter((user: User) => user.id !== id),
+    )
+    // context로 전달
+    return { prevUsers }
   },
-  onError: (error) => {
-    console.error('❌ 사용자 삭제 실패:', error)
+  onError: (error, userId, context) => {
+    // 실패 시 백업된 사용자 목록 복구
+    queryClient.setQueryData(['users'], context?.prevUsers)
+  },
+  onSettled: () => {
+    // 성공/실패 여부와 상관없이 users쿼리 무효화
+    queryClient.invalidateQueries({ queryKey: ['users'] })
   },
 })
 
