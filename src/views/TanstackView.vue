@@ -20,7 +20,7 @@
           <input v-model="newUser.age" type="text" id="age" />
         </div>
       </span>
-      <button class="user-add-btn" :disabled="!userInputValid" @click="addUser">추가</button>
+      <button class="user-add-btn" :disabled="!userInputValid" @click="createUser">추가</button>
     </div>
     <div>
       <h1>사용자 목록</h1>
@@ -33,6 +33,7 @@
               <th>이름</th>
               <th>이메일</th>
               <th>나이</th>
+              <th>삭제</th>
             </tr>
           </thead>
           <tbody>
@@ -40,6 +41,7 @@
               <td>{{ user.name }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.age }}</td>
+              <td><button @click="deleteUser(user.id)">삭제</button></td>
             </tr>
           </tbody>
         </table>
@@ -50,13 +52,13 @@
 </template>
 
 <script setup lang="ts">
-import { getUsersApi, createUserApi } from '@/apis/users'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { computed, ref } from 'vue'
-import type { User } from '@/types/user'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { getUsersApi, createUserApi, deleteUserApi } from '@/apis/users'
+import type { AddUser } from '@/types/user'
 
 const queryClient = useQueryClient()
-const newUser = ref({} as User)
+const newUser = ref({} as AddUser)
 
 const userInputValid = computed(() => {
   return newUser.value.name && newUser.value.email && newUser.value.age
@@ -75,20 +77,34 @@ const {
   // refetchInterval: 8000, // 8초 후 자동 새로고침
 })
 
-const mutation = useMutation({
+const createUserMutation = useMutation({
   mutationFn: createUserApi,
   onSuccess: (data) => {
-    console.log('✅ 게시글 추가 성공:', data)
+    console.log('✅ 사용자 추가 성공:', data)
     queryClient.invalidateQueries({ queryKey: ['users'] })
-    newUser.value = {} as User
+    newUser.value = {}
   },
   onError: (error) => {
-    console.error('❌ 게시글 추가 실패:', error)
+    console.error('❌ 사용자 추가 실패:', error)
   },
 })
 
-const addUser = () => {
-  mutation.mutate(newUser.value)
+const deleteUserMutation = useMutation({
+  mutationFn: deleteUserApi,
+  onSuccess: (data) => {
+    console.log('✅ 사용자 삭제 성공:', data)
+    queryClient.invalidateQueries({ queryKey: ['users'] })
+  },
+  onError: (error) => {
+    console.error('❌ 사용자 삭제 실패:', error)
+  },
+})
+
+const createUser = () => {
+  createUserMutation.mutate(newUser.value)
+}
+const deleteUser = (id: number) => {
+  deleteUserMutation.mutate(id)
 }
 </script>
 
