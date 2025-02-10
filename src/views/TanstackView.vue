@@ -48,7 +48,6 @@
             </tr>
           </tbody>
         </table>
-        <p v-if="isFetching">⏳ 데이터 새로 불러오는 중...</p>
       </div>
     </div>
   </main>
@@ -67,19 +66,24 @@ const userInputValid = computed(() => {
   return newUser.value.name && newUser.value.email && newUser.value.age
 })
 
+const getUsersDelay = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 2000))
+  return getUsersApi()
+}
+
 const {
   data: users,
   isLoading,
-  isFetching,
   error,
   refetch,
 } = useQuery({
   queryKey: ['users'],
-  queryFn: getUsersApi,
+  queryFn: getUsersDelay,
+  placeholderData: [{ id: 0, name: '조회중...', email: '조회중...', age: '조회중...' }],
   staleTime: 5000, // 5초 동안 캐시된 데이터 사용
   gcTime: 10000, // 10초 후 캐시 삭제
   refetchOnWindowFocus: false, // 창이 다시 활성화될 때 새로고침 안함
-  // refetchInterval: 8000, // 8초 후 자동 새로고침
+  refetchInterval: 6000, // 6초 후 자동 새로고침
 })
 
 const handleRefresh = () => {
