@@ -7,7 +7,7 @@ export const getUsersApi = async (): Promise<User[]> => {
   return await response.json()
 }
 
-export const getUserByIdApi = async (id: number) => {
+export const getUserDetailApi = async (id: number): Promise<User> => {
   const response = await fetch(`${url}/users/${id}`)
   return await response.json()
 }

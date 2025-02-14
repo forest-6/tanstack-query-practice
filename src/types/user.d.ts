@@ -3,6 +3,11 @@ interface User {
   name: string
   email: string
   age: number | string
+  details?: {
+    address: string
+    phone: string
+    job: string
+  }
 }
 
 interface AddUser {

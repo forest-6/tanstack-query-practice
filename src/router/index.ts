@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import TanstackView from '@/views/TanstackView.vue'
 import ZodView from '@/views/ZodView.vue'
+import UserAdd from '@/views/User/UserAdd.vue'
+import UserDetail from '@/views/User/UserDetail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +22,16 @@ const router = createRouter({
       path: '/zod',
       name: 'zod',
       component: ZodView,
+    },
+    {
+      path: '/user/add',
+      name: 'user-add',
+      component: UserAdd,
+    },
+    {
+      path: '/user/detail/:id',
+      name: 'user-detail',
+      component: UserDetail,
     },
   ],
 })
