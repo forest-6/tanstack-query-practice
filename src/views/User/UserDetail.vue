@@ -23,10 +23,16 @@ import { getUserDetailApi } from '@/apis/user'
 const route = useRoute()
 const userId = Number(route.params.id)
 
+const getUserDetailDelay = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+  return getUserDetailApi(userId)
+}
+
 const { data: user } = useQuery({
   queryKey: ['user', userId],
-  queryFn: () => getUserDetailApi(userId),
+  queryFn: getUserDetailDelay,
   staleTime: 5000,
+  gcTime: 3000,
 })
 </script>
 

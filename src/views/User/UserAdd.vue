@@ -100,8 +100,9 @@ const handleRefresh = () => {
 
 const prefetchUserDetail = (userId: number) => {
   queryClient.prefetchQuery({
-    queryKey: ['user', userId],
+    queryKey: ['user', Number(userId)],
     queryFn: () => getUserDetailApi(userId),
+    gcTime: 3000,
   })
 }
 
