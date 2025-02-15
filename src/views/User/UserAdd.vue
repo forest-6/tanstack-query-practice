@@ -65,7 +65,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
-import { getUsersApi, createUserApi, deleteUserApi, getUserDetailApi } from '@/apis/users'
+import { getUsersApi, createUserApi, deleteUserApi, getUserDetailApi } from '@/apis/user'
 import type { User, AddUser } from '@/types/user'
 
 const queryClient = useQueryClient()

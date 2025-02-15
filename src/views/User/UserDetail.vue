@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useQuery } from '@tanstack/vue-query'
-import { getUserDetailApi } from '@/apis/users'
+import { getUserDetailApi } from '@/apis/user'
 
 const route = useRoute()
 const userId = Number(route.params.id)

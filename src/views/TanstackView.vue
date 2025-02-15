@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <button class="button button--primary" @click="$router.push('/user/add')">사용자 추가</button>
+    <button class="button button--primary" @click="$router.push('/post/list')">게시글 목록</button>
   </div>
 </template>
 

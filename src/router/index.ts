@@ -4,6 +4,7 @@ import TanstackView from '@/views/TanstackView.vue'
 import ZodView from '@/views/ZodView.vue'
 import UserAdd from '@/views/User/UserAdd.vue'
 import UserDetail from '@/views/User/UserDetail.vue'
+import PostList from '@/views/Post/PostList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/user/detail/:id',
       name: 'user-detail',
       component: UserDetail,
+    },
+    {
+      path: '/post/list',
+      name: 'post-list',
+      component: PostList,
     },
   ],
 })
